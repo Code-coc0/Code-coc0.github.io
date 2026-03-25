@@ -1,0 +1,1051 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>城市探索指南</title>
+    <meta name="description" content="一个关于城市探索的指南网页：热门地点、当地美食、交通建议和互动行程规划。" />
+    <style>
+      :root {
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --text: #1e293b;
+        --muted: #64748b;
+        --accent: #3b82f6;
+        --accent2: #10b981;
+        --border: #e2e8f0;
+        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+
+      [data-theme="dark"] {
+        --bg: #0f172a;
+        --card: #1e293b;
+        --text: #f8fafc;
+        --muted: #94a3b8;
+        --accent: #60a5fa;
+        --accent2: #34d399;
+        --border: #334155;
+        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .container {
+        width: min(1200px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.8);
+        border-bottom: 1px solid var(--border);
+      }
+
+      [data-theme="dark"] header {
+        background: rgba(15, 23, 42, 0.8);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 0;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        font-size: 1.25rem;
+        color: var(--text);
+      }
+
+      .logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 900;
+        font-size: 1.2rem;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 24px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        font-size: 1rem;
+        color: var(--muted);
+        transition: color 0.2s ease;
+      }
+
+      .nav-links a:hover {
+        color: var(--text);
+        text-decoration: none;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--card);
+        color: var(--text);
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.2s ease;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow);
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: white;
+        border-color: var(--accent);
+      }
+
+      .btn-primary:hover {
+        background: #2563eb;
+        border-color: #2563eb;
+      }
+
+      .hero {
+        padding: 80px 0 60px;
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1));
+      }
+
+      .hero-content {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(59, 130, 246, 0.1);
+        color: var(--accent);
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 24px;
+      }
+
+      .kicker::before {
+        content: "✨";
+        font-size: 16px;
+      }
+
+      h1 {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 800;
+        line-height: 1.2;
+        margin: 0 0 16px;
+        letter-spacing: -0.025em;
+      }
+
+      .lead {
+        font-size: 1.25rem;
+        color: var(--muted);
+        margin: 0 0 32px;
+        max-width: 60ch;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 24px;
+        margin-top: 60px;
+        padding: 40px;
+        background: var(--card);
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+      }
+
+      .stat-item {
+        text-align: center;
+      }
+
+      .stat-value {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--accent);
+        margin-bottom: 8px;
+      }
+
+      .stat-label {
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      main {
+        padding: 60px 0;
+      }
+
+      .section {
+        margin-bottom: 80px;
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 48px;
+      }
+
+      .section-title h2 {
+        font-size: 2.25rem;
+        font-weight: 700;
+        margin: 0 0 12px;
+        letter-spacing: -0.025em;
+      }
+
+      .section-title p {
+        font-size: 1.125rem;
+        color: var(--muted);
+        margin: 0;
+        max-width: 60ch;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+      }
+
+      .card {
+        background: var(--card);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .card-img {
+        height: 200px;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 3rem;
+      }
+
+      .card-content {
+        padding: 24px;
+      }
+
+      .card h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin: 0 0 12px;
+      }
+
+      .card p {
+        color: var(--muted);
+        margin: 0 0 16px;
+      }
+
+      .card-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tag {
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: rgba(59, 130, 246, 0.1);
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .food-section {
+        background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(239, 68, 68, 0.1));
+        padding: 60px 0;
+        margin: 80px 0;
+      }
+
+      .food-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+      }
+
+      .food-card {
+        background: var(--card);
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: var(--shadow);
+        transition: transform 0.3s ease;
+      }
+
+      .food-card:hover {
+        transform: translateY(-4px);
+      }
+
+      .food-card h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin: 0 0 8px;
+      }
+
+      .food-card .price {
+        color: var(--accent2);
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+
+      .food-card p {
+        color: var(--muted);
+        margin: 0;
+        font-size: 14px;
+      }
+
+      .itinerary-planner {
+        background: var(--card);
+        border-radius: 16px;
+        padding: 40px;
+        box-shadow: var(--shadow);
+      }
+
+      .planner-form {
+        display: grid;
+        gap: 24px;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .form-group {
+        display: grid;
+        gap: 8px;
+      }
+
+      label {
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--text);
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--bg);
+        color: var(--text);
+        font-family: inherit;
+        font-size: 14px;
+        transition: border-color 0.2s ease;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 120px;
+      }
+
+      .form-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .map-section {
+        margin: 80px 0;
+      }
+
+      .map-placeholder {
+        height: 400px;
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1));
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted);
+        font-size: 1.125rem;
+      }
+
+      footer {
+        background: var(--card);
+        border-top: 1px solid var(--border);
+        padding: 60px 0 30px;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+        margin-bottom: 40px;
+      }
+
+      .footer-section h3 {
+        font-size: 1.125rem;
+        font-weight: 700;
+        margin: 0 0 16px;
+      }
+
+      .footer-section ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .footer-section li {
+        margin-bottom: 12px;
+      }
+
+      .footer-section a {
+        color: var(--muted);
+        transition: color 0.2s ease;
+      }
+
+      .footer-section a:hover {
+        color: var(--accent);
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding-top: 30px;
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 16px 20px;
+        box-shadow: var(--shadow-lg);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        z-index: 100;
+        max-width: 320px;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+      }
+
+      .toast.show {
+        transform: translateX(0);
+      }
+
+      .toast-success {
+        border-left: 4px solid var(--accent2);
+      }
+
+      .toast-error {
+        border-left: 4px solid #ef4444;
+      }
+
+      .toast-content {
+        flex: 1;
+      }
+
+      .toast-title {
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .toast-message {
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      .toast-close {
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        color: var(--muted);
+        padding: 0;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        transition: background 0.2s ease;
+      }
+
+      .toast-close:hover {
+        background: rgba(0, 0, 0, 0.05);
+      }
+
+      @media (max-width: 768px) {
+        .nav {
+          flex-direction: column;
+          gap: 12px;
+          padding: 12px 0;
+        }
+
+        .nav-links {
+          justify-content: center;
+        }
+
+        .hero {
+          padding: 60px 0 40px;
+        }
+
+        .stats {
+          padding: 24px;
+          margin-top: 40px;
+        }
+
+        .section {
+          margin-bottom: 60px;
+        }
+
+        .itinerary-planner {
+          padding: 24px;
+        }
+
+        .footer-content {
+          gap: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <div class="brand">
+          <div class="logo">城</div>
+          <span>城市探索指南</span>
+        </div>
+        <nav class="nav-links">
+          <a href="#places">热门地点</a>
+          <a href="#food">当地美食</a>
+          <a href="#transport">交通建议</a>
+          <a href="#itinerary">行程规划</a>
+          <button class="btn" id="themeToggle">
+            <span id="themeToggleText">切换主题</span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="kicker">城市探索，发现不一样的风景</div>
+          <h1>探索城市的每一个角落</h1>
+          <p class="lead">
+            从热门景点到隐藏 gems，从当地美食到交通指南，我们为你提供全面的城市探索信息，
+            让你的旅程更加精彩。
+          </p>
+          <div class="hero-actions">
+            <a href="#itinerary" class="btn btn-primary">开始规划行程</a>
+            <button class="btn" id="randomPlaceBtn">随机推荐地点</button>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat-item">
+            <div class="stat-value">12+</div>
+            <div class="stat-label">热门城市</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">100+</div>
+            <div class="stat-label">推荐地点</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">50+</div>
+            <div class="stat-label">美食推荐</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">24/7</div>
+            <div class="stat-label">旅行支持</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <main>
+      <section class="section" id="places">
+        <div class="container">
+          <div class="section-title">
+            <h2>热门地点</h2>
+            <p>探索城市中最值得一去的地方，从标志性建筑到隐藏的小众景点</p>
+          </div>
+          <div class="grid-3">
+            <div class="card">
+              <div class="card-img">🏙️</div>
+              <div class="card-content">
+                <h3>城市中心区</h3>
+                <p>体验城市的繁华与活力，探索购物中心、历史建筑和文化地标。</p>
+                <div class="card-tags">
+                  <span class="tag">文化</span>
+                  <span class="tag">购物</span>
+                  <span class="tag">美食</span>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-img">🌳</div>
+              <div class="card-content">
+                <h3>城市公园</h3>
+                <p>在城市的绿洲中放松身心，享受自然风光和户外活动。</p>
+                <div class="card-tags">
+                  <span class="tag">自然</span>
+                  <span class="tag">休闲</span>
+                  <span class="tag">运动</span>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-img">🏛️</div>
+              <div class="card-content">
+                <h3>历史遗迹</h3>
+                <p>了解城市的历史文化，参观博物馆、古建筑和历史街区。</p>
+                <div class="card-tags">
+                  <span class="tag">历史</span>
+                  <span class="tag">文化</span>
+                  <span class="tag">教育</span>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-img">🎭</div>
+              <div class="card-content">
+                <h3>艺术区</h3>
+                <p>探索城市的艺术氛围，参观画廊、剧院和创意空间。</p>
+                <div class="card-tags">
+                  <span class="tag">艺术</span>
+                  <span class="tag">文化</span>
+                  <span class="tag">创意</span>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-img">🌉</div>
+              <div class="card-content">
+                <h3>城市夜景</h3>
+                <p>欣赏城市的夜景灯光，体验夜生活和娱乐场所。</p>
+                <div class="card-tags">
+                  <span class="tag">夜生活</span>
+                  <span class="tag">娱乐</span>
+                  <span class="tag">摄影</span>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-img">🚲</div>
+              <div class="card-content">
+                <h3>骑行路线</h3>
+                <p>沿着城市的自行车道探索，感受不同的城市风光。</p>
+                <div class="card-tags">
+                  <span class="tag">运动</span>
+                  <span class="tag">休闲</span>
+                  <span class="tag">自然</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="food-section" id="food">
+        <div class="container">
+          <div class="section-title">
+            <h2>当地美食</h2>
+            <p>品尝城市的特色美食，从街头小吃到高端餐厅</p>
+          </div>
+          <div class="food-grid">
+            <div class="food-card">
+              <h3>特色小吃</h3>
+              <div class="price">¥10-30</div>
+              <p>尝试当地最受欢迎的街头小吃，体验地道的城市味道。</p>
+            </div>
+            <div class="food-card">
+              <h3>传统餐厅</h3>
+              <div class="price">¥50-150</div>
+              <p>在历史悠久的餐厅中品尝正宗的当地菜肴。</p>
+            </div>
+            <div class="food-card">
+              <h3>创意料理</h3>
+              <div class="price">¥100-300</div>
+              <p>体验融合现代烹饪技术的创新美食。</p>
+            </div>
+            <div class="food-card">
+              <h3>夜市美食</h3>
+              <div class="price">¥15-50</div>
+              <p>在热闹的夜市中品尝各种特色小吃。</p>
+            </div>
+            <div class="food-card">
+              <h3>咖啡文化</h3>
+              <div class="price">¥20-40</div>
+              <p>在当地特色咖啡馆中享受悠闲时光。</p>
+            </div>
+            <div class="food-card">
+              <h3>甜点天堂</h3>
+              <div class="price">¥15-60</div>
+              <p>品尝当地特色甜点，满足你的甜蜜味蕾。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="transport">
+        <div class="container">
+          <div class="section-title">
+            <h2>交通建议</h2>
+            <p>了解城市的交通系统，选择最适合你的出行方式</p>
+          </div>
+          <div class="grid-3">
+            <div class="card">
+              <div class="card-img">🚇</div>
+              <div class="card-content">
+                <h3>公共交通</h3>
+                <p>利用地铁、公交等公共交通系统，方便快捷地游览城市。</p>
+                <div class="card-tags">
+                  <span class="tag">经济</span>
+                  <span class="tag">便捷</span>
+                  <span class="tag">环保</span>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-img">🚲</div>
+              <div class="card-content">
+                <h3>共享单车</h3>
+                <p>使用共享单车，灵活探索城市的各个角落。</p>
+                <div class="card-tags">
+                  <span class="tag">灵活</span>
+                  <span class="tag">健康</span>
+                  <span class="tag">经济</span>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-img">🚕</div>
+              <div class="card-content">
+                <h3>出租车/网约车</h3>
+                <p>选择出租车或网约车，享受舒适便捷的出行体验。</p>
+                <div class="card-tags">
+                  <span class="tag">舒适</span>
+                  <span class="tag">便捷</span>
+                  <span class="tag">灵活</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section map-section">
+        <div class="container">
+          <div class="section-title">
+            <h2>城市地图</h2>
+            <p>查看城市的主要景点和区域分布</p>
+          </div>
+          <div class="map-placeholder">
+            🗺️ 交互式地图将在这里显示
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="itinerary">
+        <div class="container">
+          <div class="section-title">
+            <h2>行程规划</h2>
+            <p>根据你的兴趣和时间，定制个性化的城市探索行程</p>
+          </div>
+          <div class="itinerary-planner">
+            <form id="itineraryForm" class="planner-form">
+              <div class="form-group">
+                <label for="city">选择城市</label>
+                <select id="city" name="city" required>
+                  <option value="">请选择城市</option>
+                  <option value="beijing">北京</option>
+                  <option value="shanghai">上海</option>
+                  <option value="guangzhou">广州</option>
+                  <option value="shenzhen">深圳</option>
+                  <option value="hangzhou">杭州</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="days">旅行天数</label>
+                <select id="days" name="days" required>
+                  <option value="">请选择天数</option>
+                  <option value="1">1天</option>
+                  <option value="2">2天</option>
+                  <option value="3">3天</option>
+                  <option value="4">4天</option>
+                  <option value="5">5天及以上</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="interests">兴趣爱好</label>
+                <select id="interests" name="interests" multiple required>
+                  <option value="culture">文化历史</option>
+                  <option value="nature">自然风光</option>
+                  <option value="food">美食探索</option>
+                  <option value="shopping">购物</option>
+                  <option value="art">艺术展览</option>
+                  <option value="nightlife">夜生活</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="budget">预算范围</label>
+                <select id="budget" name="budget" required>
+                  <option value="">请选择预算</option>
+                  <option value="low">经济型</option>
+                  <option value="medium">中等</option>
+                  <option value="high">高端</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="notes">其他需求</label>
+                <textarea id="notes" name="notes" placeholder="请输入其他特殊需求或偏好"></textarea>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">生成行程</button>
+                <button type="reset" class="btn">重置</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>关于我们</h3>
+            <ul>
+              <li><a href="#">公司简介</a></li>
+              <li><a href="#">联系方式</a></li>
+              <li><a href="#">加入我们</a></li>
+              <li><a href="#">隐私政策</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>热门城市</h3>
+            <ul>
+              <li><a href="#">北京</a></li>
+              <li><a href="#">上海</a></li>
+              <li><a href="#">广州</a></li>
+              <li><a href="#">深圳</a></li>
+              <li><a href="#">杭州</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>旅行资源</h3>
+            <ul>
+              <li><a href="#">旅行攻略</a></li>
+              <li><a href="#">住宿推荐</a></li>
+              <li><a href="#">交通指南</a></li>
+              <li><a href="#">美食推荐</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>关注我们</h3>
+            <ul>
+              <li><a href="#">微信公众号</a></li>
+              <li><a href="#">微博</a></li>
+              <li><a href="#">抖音</a></li>
+              <li><a href="#">小红书</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 城市探索指南. 保留所有权利.</p>
+        </div>
+      </div>
+    </footer>
+
+    <div class="toast" id="toast">
+      <div class="toast-content">
+        <div class="toast-title" id="toastTitle">提示</div>
+        <div class="toast-message" id="toastMessage">消息内容</div>
+      </div>
+      <button class="toast-close" id="toastClose">×</button>
+    </div>
+
+    <script>
+      const $ = (sel) => document.querySelector(sel);
+      const $$ = (sel) => document.querySelectorAll(sel);
+
+      // 主题切换
+      const THEME_KEY = "cityExplorerTheme";
+      const themeToggle = $("#themeToggle");
+      const themeToggleText = $("#themeToggleText");
+
+      const applyTheme = (theme) => {
+        document.documentElement.setAttribute("data-theme", theme);
+        const isDark = theme === "dark";
+        themeToggleText.textContent = isDark ? "切换到浅色" : "切换到深色";
+      };
+
+      const storedTheme = localStorage.getItem(THEME_KEY);
+      if (storedTheme === "light" || storedTheme === "dark") {
+        applyTheme(storedTheme);
+      } else {
+        const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        applyTheme(prefersDark ? "dark" : "light");
+      }
+
+      themeToggle.addEventListener("click", () => {
+        const current = document.documentElement.getAttribute("data-theme") || "light";
+        const next = current === "light" ? "dark" : "light";
+        localStorage.setItem(THEME_KEY, next);
+        applyTheme(next);
+      });
+
+      // 随机推荐地点
+      const places = [
+        "城市中心广场",
+        "历史文化街区",
+        "城市观景台",
+        "当地特色市场",
+        "城市博物馆",
+        "滨江公园",
+        "艺术区",
+        "特色咖啡馆"
+      ];
+
+      const randomPlaceBtn = $("#randomPlaceBtn");
+
+      randomPlaceBtn.addEventListener("click", () => {
+        const randomPlace = places[Math.floor(Math.random() * places.length)];
+        showToast("随机推荐", `你可以去看看：${randomPlace}`);
+      });
+
+      // Toast 提示
+      const toast = $("#toast");
+      const toastTitle = $("#toastTitle");
+      const toastMessage = $("#toastMessage");
+      const toastClose = $("#toastClose");
+      let toastTimer = null;
+
+      const showToast = (title, message, type = "success") => {
+        toastTitle.textContent = title;
+        toastMessage.textContent = message;
+        toast.className = `toast toast-${type} show`;
+        
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toast.classList.remove("show");
+        }, 3000);
+      };
+
+      toastClose.addEventListener("click", () => {
+        toast.classList.remove("show");
+      });
+
+      // 行程规划表单
+      const itineraryForm = $("#itineraryForm");
+
+      itineraryForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        
+        const city = $("#city").value;
+        const days = $("#days").value;
+        const interests = Array.from($$("#interests option:checked")).map(option => option.text);
+        const budget = $("#budget").value;
+        
+        if (!city || !days || interests.length === 0 || !budget) {
+          showToast("提示", "请填写所有必填项", "error");
+          return;
+        }
+
+        showToast("行程生成中", "正在为您生成个性化行程，请稍候...");
+        
+        // 模拟行程生成
+        setTimeout(() => {
+          showToast("行程生成成功", `已为您生成 ${days} 天的${city}探索行程，包含${interests.join("、")}等活动。`);
+        }, 1500);
+      });
+
+      // 平滑滚动
+      $$('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
